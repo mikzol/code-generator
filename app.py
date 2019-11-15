@@ -7,7 +7,7 @@ from sqlite3 import Error
 import random
 
 
-db_connect = create_engine('sqlite:///database.db') # 'mysql://username:pass@localhost/'
+db_connect = create_engine('mysql://vishiuhc_api:pythoncoupon.2019@localhost/vishiuhc_WPRMG') # 'mysql://username:pass@localhost/'
 app = Flask(__name__)
 api = Api(app)
 
