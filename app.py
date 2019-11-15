@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from sqlalchemy import create_engine
 from json import dumps
