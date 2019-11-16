@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from sqlalchemy import create_engine
-import sqlite3
+import sqlite3 
 from sqlite3 import Error
 import random
 
@@ -70,7 +70,7 @@ api.add_resource(Coupons_Vouchers, '/generate') #
 
 
 if __name__ == '__main__':
-    database = r"/home/markmanu/task/jean/database.db"
+    database = r"/home/markmanu/task/code-generator/database.db"
     code_table = """ CREATE TABLE IF NOT EXISTS coupons_vouchers (
                                         id integer PRIMARY KEY,
                                         code_type text NOT NULL,
