@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from sqlalchemy import create_engine
-from json import dumps
 import sqlite3
 from sqlite3 import Error
 import random
