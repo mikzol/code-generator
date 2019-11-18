@@ -4,18 +4,21 @@ from sqlalchemy import create_engine
 import sqlite3 
 from sqlite3 import Error
 import random
+import MySQLdb
 
 
-db_connect = create_engine('mysql://vishiuhc_api:pythoncoupon.2019@localhost/vishiuhc_WPRMG') # 'mysql://username:pass@localhost/'
+# db_connect = create_engine('mysql://vishiuhc_api:coupon.2019@localhost/vishiuhc_WPRMG') # 'mysql://username:pass@localhost/'
+db_connect = MySQLdb.connect(host="162.241.224.212", user="vishiuhc_api", passwd="-?n%oOp4JeMA", db="vishiuhc_WPRMG")
+db_cursor = db_connect.cursor()
 app = Flask(__name__)
 api = Api(app)
 
 
-def create_connection(db_file):
+def create_connection():
     """ create a database connection to a SQLite database """
     conn = None
     try:
-        conn = sqlite3.connect(db_file)
+        conn = MySQLdb.connect(host="162.241.224.212", user="vishiuhc_api", passwd="-?n%oOp4JeMA", db="vishiuhc_WPRMG")
         return conn
     except Error as e:
         print(e)
@@ -46,11 +49,11 @@ def generate_code(len=5):
 
 class Coupons_Vouchers(Resource):
     def get(self):
-        conn = db_connect.connect() # connect to database
-        query = conn.execute("select * from coupons_vouchers") # This line performs query and returns json result
-        return {'coupons': [i[0] for i in query.cursor.fetchall()]} # Fetches first column that is Coupon ID
+        # conn = db_connect.connect() # connect to database
+        query = db_cursor.execute("select * from coupons_vouchers") # This line performs query and returns json result
+        return {'coupons': [i[0] for i in db_cursor.fetchall()]} # Fetches first column that is Coupon ID
     def post(self):
-        conn = db_connect.connect() # connect to database
+        # conn = db_connect.connect() # connect to database
         parser = reqparse.RequestParser()
         parser.add_argument('code_type')
         parser.add_argument('discount_val')
@@ -62,7 +65,7 @@ class Coupons_Vouchers(Resource):
         if args['code_len'] is not None:
             code = generate_code(args['code_len'])
 
-        query = conn.execute("insert into coupons_vouchers values(null, '{0}', '{1}', '{2}')".format(args['code_type'], args['discount_val'], code))
+        query = db_cursor.execute("insert into coupons_vouchers values(null, '{0}', '{1}', '{2}', '{3}')".format(args['code_type'], args['discount_val'], code, args['attributed_to']))
         return {'status': 'success'}
 
 
@@ -70,15 +73,15 @@ api.add_resource(Coupons_Vouchers, '/generate') #
 
 
 if __name__ == '__main__':
-    database = r"/home/markmanu/task/code-generator/database.db"
+    # database = r"/home/markmanu/task/code-generator/database.db"
     code_table = """ CREATE TABLE IF NOT EXISTS coupons_vouchers (
-                                        id integer PRIMARY KEY,
+                                        id integer PRIMARY KEY AUTO_INCREMENT,
                                         code_type text NOT NULL,
                                         discount_val text NOT NULL,
                                         code text NOT NULL,
                                         attributed_to text NOT NULL
                                     ); """
 
-    conn = create_connection(database)
+    conn = create_connection()
     create_table(conn, code_table)
     app.run()
