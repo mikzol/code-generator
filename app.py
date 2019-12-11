@@ -48,11 +48,11 @@ class Coupons_Vouchers(Resource):
     def get(self):
         db_con = create_connection()
         db_cursor = db_con.cursor()
-        query = db_cursor.execute("select * from coupons_vouchers") # This line performs query and returns json result
+        query = db_cursor.execute("select * from coupons_vouchers") # this line performs query and returns json result
         coupons = db_cursor.fetchall()
         db_con.commit()
         db_con.close()
-        return {'coupons': [i[3] for i in coupons]} # Fetches first column that is Coupon ID
+        return {'coupons': [i[3] for i in coupons]} # fetches first column that is Coupon ID
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('code_type')
