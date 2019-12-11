@@ -73,7 +73,7 @@ class Coupons_Vouchers(Resource):
         return {'status': 'success'}
 
 
-api.add_resource(Coupons_Vouchers, '/generate') # 
+api.add_resource(Coupons_Vouchers, '/generate')
 
 
 if __name__ == '__main__':
